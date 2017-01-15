@@ -1,0 +1,5 @@
+{
+  "dbHost": "mongodb://localhost:27017",
+  "dbName": "graphql-blog",
+  "appPort": "8080"
+}

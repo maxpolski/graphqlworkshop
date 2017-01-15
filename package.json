@@ -3,5 +3,33 @@
   "version": "1.0.0",
   "main": "index.js",
   "author": "Max Polski <maxpolski@nixsolutions.com>",
-  "license": "MIT"
+  "scripts": {
+    "build-frontend": "webpack --config client/configs/webpack/webpack.config.babel.js",
+    "start": "yarn build-frontend && node server/index.js",
+    "dev-frontend": "webpack --watch -d --color --config client/configs/webpack/webpack.config.babel.js",
+    "dev-backend": "nodemon --ignore client server/index.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.14.0",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2"
+  },
+  "devDependencies": {
+    "babel-core": "^6.21.0",
+    "babel-loader": "^6.2.10",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-react": "^6.16.0",
+    "babel-preset-stage-0": "^6.16.0",
+    "babel-register": "^6.18.0",
+    "css-loader": "^0.26.1",
+    "eslint": "^3.13.1",
+    "eslint-config-airbnb": "^14.0.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^3.0.2",
+    "eslint-plugin-react": "^6.9.0",
+    "progress-bar-webpack-plugin": "^1.9.2",
+    "style-loader": "^0.13.1",
+    "webpack": "^1.14.0"
+  }
 }
