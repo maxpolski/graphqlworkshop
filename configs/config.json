@@ -1,5 +1,7 @@
 {
-  "dbHost": "mongodb://localhost:27017",
+  "dbHost": "mongodb://localhost",
+  "dbPort": "27017",
   "dbName": "graphql-blog",
-  "appPort": "8080"
+  "appPort": "8080",
+  "tokenSecretString": "super-secet-string-1234"
 }

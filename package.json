@@ -11,9 +11,14 @@
   },
   "license": "MIT",
   "dependencies": {
+    "body-parser": "^1.15.2",
     "express": "^4.14.0",
+    "fetch-ponyfill": "^3.0.2",
+    "jwt-simple": "^0.5.1",
+    "mongoose": "^4.7.6",
     "react": "^15.4.2",
-    "react-dom": "^15.4.2"
+    "react-dom": "^15.4.2",
+    "react-router": "^3.0.1"
   },
   "devDependencies": {
     "babel-core": "^6.21.0",
