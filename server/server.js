@@ -13,6 +13,7 @@ import getCommentRouteHandler from './routes/getCommentRoute';
 import addLikePostRouteHandler from './routes/addLikePostRoute';
 import addLikeCommentRouteHandler from './routes/addLikeCommentRoute';
 import getUserRouteHandler from './routes/getUserRoute';
+import getPostsRouteHandler from './routes/getPostsRoute';
 
 const PORT = configs.appPort || 3000;
 
@@ -23,14 +24,15 @@ app.use(bodyParser.json());
 app.use(isAuthorizedMiddleware);
 
 app.get('/', indexRouteHandler);
-app.post('/auth', authRouteHandler);
-app.post('/post', addPostRouteHandler);
-app.get('/post/:postId', getPostRouteHandler);
-app.post('/comment', addCommentRouteHandler);
-app.get('/comment/:commentId', getCommentRouteHandler);
-app.post('/likepost', addLikePostRouteHandler);
-app.post('/likecomment', addLikeCommentRouteHandler);
-app.get('/user/:userId', getUserRouteHandler);
+app.post('/api/auth', authRouteHandler);
+app.post('/api/post', addPostRouteHandler);
+app.get('/api/post/:postId', getPostRouteHandler);
+app.post('/api/comment', addCommentRouteHandler);
+app.get('/api/comment/:commentId', getCommentRouteHandler);
+app.post('/api/likepost', addLikePostRouteHandler);
+app.post('/api/likecomment', addLikeCommentRouteHandler);
+app.get('/api/user/:userId', getUserRouteHandler);
+app.get('/api/posts/:pageNum*?', getPostsRouteHandler);
 
 module.exports = () =>
   app.listen(PORT, () => {
