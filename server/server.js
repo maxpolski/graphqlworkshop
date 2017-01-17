@@ -34,6 +34,8 @@ app.post('/api/likecomment', addLikeCommentRouteHandler);
 app.get('/api/user/:userId', getUserRouteHandler);
 app.get('/api/posts/:pageNum*?', getPostsRouteHandler);
 
+app.get('*', indexRouteHandler);
+
 module.exports = () =>
   app.listen(PORT, () => {
     console.log(`listening on port ${PORT}`);

@@ -9,7 +9,7 @@ export default (req, res) => {
     if (!err) {
       return res
               .set('Content-Type', 'application/json')
-              .send(JSON.stringify({ comment }));
+              .send(JSON.stringify(comment));
     }
 
     return res
