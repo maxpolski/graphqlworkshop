@@ -13,6 +13,7 @@ import getCommentRouteHandler from './routes/getCommentRoute';
 import addLikePostRouteHandler from './routes/addLikePostRoute';
 import addLikeCommentRouteHandler from './routes/addLikeCommentRoute';
 import getUserRouteHandler from './routes/getUserRoute';
+import getCurrentUserRouteHandler from './routes/getCurrentUserRoute';
 import getPostsRouteHandler from './routes/getPostsRoute';
 
 const PORT = configs.appPort || 3000;
@@ -33,6 +34,7 @@ app.post('/api/likepost', addLikePostRouteHandler);
 app.post('/api/likecomment', addLikeCommentRouteHandler);
 app.get('/api/user/:userId', getUserRouteHandler);
 app.get('/api/posts/:pageNum*?', getPostsRouteHandler);
+app.get('/api/currentUser/:token', getCurrentUserRouteHandler);
 
 app.get('*', indexRouteHandler);
 
