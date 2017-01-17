@@ -2,10 +2,10 @@ import Post from '../data/models/post';
 
 export default (req, res) => {
   const {
-    pageNum,
+    pageNum = 1,
   } = req.params;
   const LIMIT = 10;
-  const query = Post.find({}).skip((pageNum - 1) * LIMIT).limit(LIMIT);
+  const query = Post.find().skip((pageNum - 1) * LIMIT).limit(LIMIT);
   query.exec((err, posts) => {
     if (!err && posts) {
       return res
