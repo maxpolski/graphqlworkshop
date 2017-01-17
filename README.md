@@ -10,6 +10,6 @@ For this workshop you'll need
 
 3.MongoDB
 
-## To start it on your local run `yarn`
+## To start it on your local run 'yarn'
 
 After that you'll need to generate some fake data, so run **yarn generate-data**
