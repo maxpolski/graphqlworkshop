@@ -12,7 +12,7 @@ export default (req, res) => {
   User.findOne({ login, password }, (err, result) => {
     if (!err) {
       if (result) {
-        const payload = { login };
+        const payload = { login, id: result._id };
         const token = jwt.encode(payload, config.tokenSecretString);
         res
           .set('Content-Type', 'application/json')

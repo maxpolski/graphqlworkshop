@@ -1,7 +1,6 @@
 import fs from 'fs';
 
 export default (req, res) => {
-  console.log('isAuthorized', req.isAuthorized);
   fs.readFile('client/static/index.html', (err, data) => {
     if (!err) {
       res

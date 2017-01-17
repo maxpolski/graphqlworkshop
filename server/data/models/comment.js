@@ -1,9 +1,15 @@
 import mongoose from 'mongoose';
 
 const CommentSchema = new mongoose.Schema({
-  text: String,
-  author: mongoose.Schema.Types.ObjectId,
-  likes: [mongoose.Schema.Types.ObjectId],
+  text: {
+    type: String,
+    required: true,
+  },
+  author: {
+    type: String,
+    required: true,
+  },
+  likes: [String],
 });
 
 export default mongoose.model('Comment', CommentSchema);

@@ -2,6 +2,8 @@ import mongoose from 'mongoose';
 
 import config from '../../configs';
 
+mongoose.Promise = global.Promise;
+
 const HOST = config.dbHost || 'localhost';
 const PORT = config.dbPort || '27017';
 const DB_NAME = config.dbName || 'test';

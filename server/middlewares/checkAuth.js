@@ -1,7 +1,4 @@
-import jwt from 'jwt-simple';
-
-import config from '../../configs';
-
+import { getLoginFromToken } from '../helpers/token';
 
 export default (req, res, next) => {
   const { token } = req.body;
@@ -10,7 +7,7 @@ export default (req, res, next) => {
     return next();
   }
 
-  const { login } = jwt.decode(token, config.tokenSecretString);
+  const login = getLoginFromToken(token);
 
   if (login) {
     req.isAuthorized = true;
