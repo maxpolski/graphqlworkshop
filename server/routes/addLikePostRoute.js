@@ -12,16 +12,16 @@ export default async (req, res) => {
   } = req.body;
 
   const userId = getUserIdFromToken(token);
-
-  const post = Post.findById(postId);
+  const post = await Post.findById(postId);
   const hasUserLikedPost = post.likes.includes(userId);
   const userIndexInLikesArray = post.likes.indexOf(userId);
 
   if (hasUserLikedPost) {
-    post.likes.splice(userIndexInLikesArray, 1);
+    const likesClone = [...post.likes];
+    likesClone.splice(userIndexInLikesArray, 1);
     return Post.findByIdAndUpdate(
-      userId,
-      { likes: post.likes },
+      postId,
+      { $set: { likes: likesClone } },
       (err) => {
         if (!err) {
           return sendRespond(res, JSON.stringify({ action: 'unliked' }));
