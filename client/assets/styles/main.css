@@ -1,0 +1,28 @@
+.main-page__posts-holder {
+  top: 100px;
+}
+
+.main-page__posts-holder__post {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  padding: 30px;
+}
+
+.post-page__post-holder {
+  top: 100px;
+}
+
+.post-page__post-holder__post-body {
+  border-top: 1px solid rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  padding: 40px;
+}
+
+.post-page__post-holder__tool-panel__like-button {
+  cursor: pointer;
+}
+
+.post-page__comment-holder {
+  padding: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
