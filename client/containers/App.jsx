@@ -33,10 +33,10 @@ export default () => (
         path="user(/:userId)"
         component={UserView}
       />
+      <Route
+        path="auth"
+        component={Auth}
+      />
     </Route>
-    <Route
-      path="auth"
-      component={Auth}
-    />
   </Router>
 );

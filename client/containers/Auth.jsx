@@ -57,33 +57,37 @@ export default class Auth extends Component {
     } = this.state;
 
     return (
-      <div>
-        <form>
+      <form className="auth-page__auth-form">
+        <div className="form-group">
           <label htmlFor="login">Login:</label>
           <input
+            className="form-control"
             type="text"
             name="login"
             value={login}
             onChange={this.handleLoginEnter}
           />
+        </div>
 
+        <div className="form-group">
           <label htmlFor="password">Password:</label>
           <input
+            className="form-control"
             type="password"
             name="password"
             value={password}
             onChange={this.handlePasswordEnter}
           />
+        </div>
 
-          <span>{ message }</span>
+        <span>{ message }</span>
 
-          <button
-            onClick={this.handleCredentialsSend}
-          >
-            Sign In
-          </button>
-        </form>
-      </div>
+        <button
+          onClick={this.handleCredentialsSend}
+        >
+          Sign In
+        </button>
+      </form>
     );
   }
 }

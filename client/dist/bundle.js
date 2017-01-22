@@ -22100,12 +22100,12 @@
 	      _react2.default.createElement(_reactRouter.Route, {
 	        path: 'user(/:userId)',
 	        component: _UserView2.default
+	      }),
+	      _react2.default.createElement(_reactRouter.Route, {
+	        path: 'auth',
+	        component: _Auth2.default
 	      })
-	    ),
-	    _react2.default.createElement(_reactRouter.Route, {
-	      path: 'auth',
-	      component: _Auth2.default
-	    })
+	    )
 	  );
 	};
 
@@ -28755,45 +28755,51 @@
 	
 	
 	      return _react2.default.createElement(
-	        'div',
-	        null,
+	        'form',
+	        { className: 'auth-page__auth-form' },
 	        _react2.default.createElement(
-	          'form',
-	          null,
+	          'div',
+	          { className: 'form-group' },
 	          _react2.default.createElement(
 	            'label',
 	            { htmlFor: 'login' },
 	            'Login:'
 	          ),
 	          _react2.default.createElement('input', {
+	            className: 'form-control',
 	            type: 'text',
 	            name: 'login',
 	            value: login,
 	            onChange: this.handleLoginEnter
-	          }),
+	          })
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'form-group' },
 	          _react2.default.createElement(
 	            'label',
 	            { htmlFor: 'password' },
 	            'Password:'
 	          ),
 	          _react2.default.createElement('input', {
+	            className: 'form-control',
 	            type: 'password',
 	            name: 'password',
 	            value: password,
 	            onChange: this.handlePasswordEnter
-	          }),
-	          _react2.default.createElement(
-	            'span',
-	            null,
-	            message
-	          ),
-	          _react2.default.createElement(
-	            'button',
-	            {
-	              onClick: this.handleCredentialsSend
-	            },
-	            'Sign In'
-	          )
+	          })
+	        ),
+	        _react2.default.createElement(
+	          'span',
+	          null,
+	          message
+	        ),
+	        _react2.default.createElement(
+	          'button',
+	          {
+	            onClick: this.handleCredentialsSend
+	          },
+	          'Sign In'
 	        )
 	      );
 	    }
@@ -28845,7 +28851,7 @@
 	
 	
 	// module
-	exports.push([module.id, ".main-page__posts-holder {\n  top: 100px;\n}\n\n.main-page__posts-holder__post {\n  border-bottom: 1px solid rgba(0, 0, 0, 0.2);\n  padding: 30px;\n}\n\n.post-page__post-holder {\n  top: 100px;\n}\n\n.post-page__post-holder__post-body {\n  border-top: 1px solid rgba(0, 0, 0, 0.2);\n  border-bottom: 1px solid rgba(0, 0, 0, 0.2);\n  padding: 40px;\n}\n\n.post-page__post-holder__tool-panel__like-button {\n  cursor: pointer;\n}\n\n.post-page__comment-holder {\n  padding: 20px;\n  border-top: 1px solid rgba(0, 0, 0, 0.2);\n  border-bottom: 1px solid rgba(0, 0, 0, 0.2);\n}\n", ""]);
+	exports.push([module.id, ".auth-page__auth-form {\n    margin: 10px auto;\n    width: 400px;\n    border: 1px solid rgba(0,0,0, .2);\n    padding: 20px;\n}\n\n.main-page__posts-holder {\n  top: 100px;\n}\n\n.main-page__posts-holder__post {\n  border-bottom: 1px solid rgba(0, 0, 0, 0.2);\n  padding: 30px;\n}\n\n.post-page__post-holder {\n  top: 100px;\n}\n\n.post-page__post-holder__post-body {\n  border-top: 1px solid rgba(0, 0, 0, 0.2);\n  border-bottom: 1px solid rgba(0, 0, 0, 0.2);\n  padding: 40px;\n}\n\n.post-page__post-holder__tool-panel__like-button {\n  cursor: pointer;\n}\n\n.post-page__comment-holder {\n  padding: 20px;\n  border-top: 1px solid rgba(0, 0, 0, 0.2);\n  border-bottom: 1px solid rgba(0, 0, 0, 0.2);\n}\n", ""]);
 	
 	// exports
 
