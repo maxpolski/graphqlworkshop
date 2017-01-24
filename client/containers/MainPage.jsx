@@ -1,39 +1,28 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { connect } from 'react-redux';
 
-import getPosts from '../apiCalls/mainPageCalls';
 import PostsList from './PostsList';
+import {
+  likePost,
+  likeComment,
+} from '../actions/likes';
 
-export default class MainPage extends Component {
-  state = {
-    posts: [],
-    isFetching: true,
-    currentPage: 1,
-  };
+const MainPage = props => (
+  <div className="row justify-content-center">
+    <PostsList
+      {...props}
+    />
+  </div>
+);
 
-  componentWillMount() {
-    const {
-      currentPage,
-    } = this.state;
+const mapStateToProps = ({ likes, posts }) => ({
+  likes,
+  posts: posts.postsList,
+});
 
-    getPosts(currentPage)
-      .then((posts) => {
-        this.setState({
-          posts,
-          isFetching: false,
-        });
-      });
-  }
+const mapDispatchToProps = dispatch => ({
+  likePost: likePost(dispatch),
+  likeComment: likeComment(dispatch),
+});
 
-  render() {
-    const {
-      posts,
-      isFetching,
-    } = this.state;
-
-    return (
-      <div className="row justify-content-center">
-        <PostsList posts={posts} isFetching={isFetching} />
-      </div>
-    );
-  }
-}
+export default connect(mapStateToProps, mapDispatchToProps)(MainPage);

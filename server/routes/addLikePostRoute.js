@@ -19,24 +19,29 @@ export default async (req, res) => {
   if (hasUserLikedPost) {
     const likesClone = [...post.likes];
     likesClone.splice(userIndexInLikesArray, 1);
-    return Post.findByIdAndUpdate(
-      postId,
-      { $set: { likes: likesClone } },
-      (err) => {
-        if (!err) {
-          return sendRespond(res, JSON.stringify({ action: 'unliked' }));
-        }
 
-        return sendRespond(res, '');
-      },
-    );
+    try {
+      await Post.findByIdAndUpdate(postId, { $set: { likes: likesClone } });
+      return sendRespond(
+        res, JSON.stringify({
+          post: await Post.findById(postId),
+          action: 'unliked',
+        }),
+      );
+    } catch (err) {
+      console.error(`Something went wrong: ${err}`);
+      return sendRespond(res, '');
+    }
   }
 
-  Post.findByIdAndUpdate(postId, { $push: { likes: userId } }, (err) => {
-    if (!err) {
-      return sendRespond(res, JSON.stringify({ action: 'liked' }));
-    }
-
+  try {
+    await Post.findByIdAndUpdate(postId, { $push: { likes: userId } });
+    return sendRespond(res, JSON.stringify({
+      post: await Post.findById(postId),
+      action: 'liked',
+    }));
+  } catch (err) {
+    console.error(`Something went wrong: ${err}`);
     return sendRespond(res, '');
-  });
+  }
 };

@@ -1,27 +1,22 @@
 import React, { PropTypes } from 'react';
 
 import PostPreview from './PostPreview';
-import Loading from './common/Loading';
+import { getPostsLikesById } from '../reducers/likes';
 
 const PostsList = (props) => {
   const {
-    isFetching,
     posts,
+    likes,
   } = props;
 
-  if (isFetching) {
-    return (
-      <Loading />
-    );
-  }
-
   return (
-    <div className="col-8 .main-page__posts-holder">
+    <div className="col-8 main-page__posts-holder">
       {
         posts.map((post, index) => (
           <PostPreview
             key={post._id}
             _id={post._id}
+            likes={getPostsLikesById(likes, post._id)}
             title={post.title}
             description={post.description}
             isLast={posts.length - 1 === index}
@@ -33,8 +28,8 @@ const PostsList = (props) => {
 };
 
 PostsList.propTypes = {
-  isFetching: PropTypes.bool.isRequired,
   posts: PropTypes.arrayOf(PropTypes.object).isRequired,
+  likes: PropTypes.object.isRequired,
 };
 
 export default PostsList;

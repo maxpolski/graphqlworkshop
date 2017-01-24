@@ -11,7 +11,9 @@ const makeFetchConfig = body => ({
 });
 
 export const likePostCall = postId =>
-  fetch('/api/likepost', makeFetchConfig({ postId, token: localStorage.getItem('token') }));
+  fetch('/api/likepost', makeFetchConfig({ postId, token: localStorage.getItem('token') }))
+    .then(data => data.json());
 
 export const likeCommentCall = commentId =>
-  fetch('/api/likecomment', makeFetchConfig({ commentId, token: localStorage.getItem('token') }));
+  fetch('/api/likecomment', makeFetchConfig({ commentId, token: localStorage.getItem('token') }))
+    .then(data => data.json());

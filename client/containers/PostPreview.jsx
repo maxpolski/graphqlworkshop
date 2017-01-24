@@ -7,9 +7,11 @@ const PostPreview = (props) => {
     title,
     description,
     isLast,
+    likes,
   } = props;
 
-  const className = `.main-page__posts-holder__post ${isLast ? 'border-bottom-0' : ''}`;
+  const className = `main-page__posts-holder__post ${isLast ? 'border-bottom-0' : ''}`;
+  const numOfLikes = likes.length;
 
   return (
     <div className={className}>
@@ -17,6 +19,7 @@ const PostPreview = (props) => {
       <div>
         {description}
       </div>
+      <div>Likes: {numOfLikes}</div>
     </div>
   );
 };
@@ -25,6 +28,7 @@ PostPreview.propTypes = {
   _id: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
+  likes: PropTypes.arrayOf(PropTypes.string).isRequired,
   isLast: PropTypes.bool.isRequired,
 };
 
