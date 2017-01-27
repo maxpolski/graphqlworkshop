@@ -28,6 +28,7 @@ class App extends Component {
     } = this.props;
 
     if (!isInitialized) {
+      console.log('something went wrong');
       return (
         <Loading />
       );

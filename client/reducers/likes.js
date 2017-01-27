@@ -46,12 +46,12 @@ export default (state = defaultState, { type, payload }) => {
       );
 
       newPostsLikes = [
-        ...state.postsLikes.slice(0, postIndex - 1),
+        ...state.postsLikes.slice(0, postIndex),
         {
           postId: payload.post._id,
           postLikes: payload.post.likes,
         },
-        ...state.postsLikes.slice(postIndex + 1, state.postsLikes.length - 1),
+        ...state.postsLikes.slice(postIndex + 1),
       ];
 
       return {

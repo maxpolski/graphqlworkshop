@@ -9,6 +9,9 @@ const PostsList = (props) => {
     likes,
   } = props;
 
+  console.log('likes', likes);
+  console.log('kinda shit', getPostsLikesById(likes, posts[0]._id));
+
   return (
     <div className="col-8 main-page__posts-holder">
       {
