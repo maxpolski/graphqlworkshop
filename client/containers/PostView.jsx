@@ -2,44 +2,32 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 
+import Loading from './common/Loading';
+import Like from './common/Like';
 import getPost, { addComment } from '../apiCalls/postViewCalls';
 import { getCurrentUser } from '../apiCalls/userDataCalls';
 import CommentsList from './CommentsList';
 import AddCommentComponent from './AddCommenTextBox';
-import Like from './common/Like';
 import isAuthorized from '../helpers/authChecker';
 import { getPostsLikesById, getPendingLikes } from '../reducers/likes';
 import { getPostByPostId } from '../reducers/posts';
-import { likePost } from '../actions/likes';
+import { likePost as likePostAction } from '../actions/likes';
+import { getCommentsList as getCommentsListAction } from '../actions/comments';
+import { getPendingComments, getCommentsByPostId } from '../reducers/comments';
+// import { getPendingUsers, getUserById } from '../reducers/users';
 
 class PostView extends Component {
-  state = {
-    post: {},
-    isFetching: true,
-    postComment: [],
-    currentUserId: '',
+  componentWillMount() {
+    const {
+      post: {
+        _id: postId,
+        comments,
+      },
+      getCommentsList,
+    } = this.props;
+
+    getCommentsList(postId, comments);
   }
-
-  // componentWillMount() {
-  //   const {
-  //     params: {
-  //       postId,
-  //     },
-  //   } = this.props;
-
-  //   getPost(postId)
-  //     .then(post =>
-  //       getCurrentUser()
-  //         .then(({ _id }) => ({ userId: _id, post })),
-  //     )
-  //     .then(({ userId, post }) =>
-  //       this.setState({
-  //         post,
-  //         isFetching: false,
-  //         currentUserId: userId,
-  //       }),
-  //     );
-  // }
 
   // onAddComment = (commentText, callBack) => {
   //   const {
@@ -73,27 +61,21 @@ class PostView extends Component {
 
   render() {
     const {
-      likePost,
       post: {
+        _id: postId,
         title,
         mainText,
         comments,
       },
-      likes = [],
+      likes,
+      commentsList,
       pendingLikes,
+      pendingComments,
     } = this.props;
-    console.log('pendingLikes', pendingLikes);
-    // const {
-    //   post: {
-    //     title,
-    //     mainText,
-    //     comments,
-    //     likes = [],
-    //   },
-    //   currentUserId,
-    // } = this.state;
+
     // const hasPostCurrentUserLike = !!likes.find(like => like === currentUserId);
     const isAuth = isAuthorized();
+    const hasOwnComments = commentsList.length === comments.length;
 
     return (
       <div>
@@ -114,10 +96,19 @@ class PostView extends Component {
               )
             :
               (
-                null
+                <Loading />
               )
             }
-            <CommentsList comments={comments} />
+            {
+              pendingComments.includes(postId) || !hasOwnComments ?
+                (
+                  <Loading />
+                )
+              :
+                (
+                  <CommentsList postId={postId} commentsList={commentsList} />
+                )
+            }
           </div>
         </div>
       </div>
@@ -125,20 +116,33 @@ class PostView extends Component {
   }
 }
 
+PostView.defaultProps = {
+  likes: [],
+};
+
 PostView.propTypes = {
-  params: PropTypes.shape({
-    postId: PropTypes.string.isRequired,
+  post: PropTypes.shape({
+    _id: PropTypes.string,
+    title: PropTypes.string,
+    comments: PropTypes.string,
+    mainText: PropTypes.string,
   }).isRequired,
+  likes: PropTypes.arrayOf(PropTypes.string).isRequired,
+  pendingComments: PropTypes.array.isRequired,
+  getCommentsList: PropTypes.func.isRequired,
+  likePost: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => ({
   post: getPostByPostId(state.posts, ownProps.params.postId),
   likes: getPostsLikesById(state.likes, ownProps.params.postId),
-  pendingLikes: getPendingLikes(state.likes),
+  pendingComments: getPendingComments(state.comments),
+  commentsList: getCommentsByPostId(state.comments, ownProps.params.postId),
 });
 
 const mapDispatchToProps = dispatch => ({
-  likePost: likePost(dispatch),
+  likePost: likePostAction(dispatch),
+  getCommentsList: getCommentsListAction(dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostView);

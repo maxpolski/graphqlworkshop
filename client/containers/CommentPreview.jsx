@@ -1,4 +1,7 @@
 import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
+
+import { getUserById } from '../reducers/users';
 
 const CommentPreview = ({ author, text, isLastComment }) => {
   const commentHolderClassName
@@ -24,4 +27,8 @@ CommentPreview.propTypes = {
   isLastComment: PropTypes.bool.isRequired,
 };
 
-export default CommentPreview;
+const mapStateToProps = (state, ownProps) => ({
+  author: getUserById(state.users, ownProps.author),
+});
+
+export default connect(mapStateToProps)(CommentPreview);

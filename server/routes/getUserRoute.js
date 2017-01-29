@@ -15,3 +15,15 @@ export default (req, res) => {
     return res.send('');
   });
 };
+
+export const getUsersList = (req, res) => {
+  const {
+    ids,
+  } = req.body;
+
+  Promise.all(ids.map(id => User.findById(id)))
+    .then(users => res
+      .set('Content-Type', 'application/json')
+      .send(JSON.stringify({ users })))
+    .catch(() => res.send(''));
+};

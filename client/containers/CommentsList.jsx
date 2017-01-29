@@ -1,94 +1,92 @@
 import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 
 import CommentPreview from './CommentPreview';
 import Loading from './common/Loading';
-import getComment from '../apiCalls/commentsListCalls';
-import { getUser } from '../apiCalls/userDataCalls';
+// import { getCommentsList } from '../actions/comments';
+import { getCommentsByPostId } from '../reducers/comments';
+import { getPendingUsers } from '../reducers/users';
 
-export default class CommentsList extends Component {
-  state = {
-    isFetching: true,
-    comments: [],
-    authors: [],
-  }
+class CommentsList extends Component {
 
-  componentWillMount() {
-    const {
-      comments: commentsIds,
-    } = this.props;
+  // componentWillMount() {
+  //   const {
+  //     postId,
+  //     commentsIds,
+  //     getCommentsList,
+  //   } = this.props;
 
-    this.fetchComments(commentsIds);
-  }
+  //   getCommentsList(postId, commentsIds);
+  // }
 
-  componentWillReceiveProps(nextProps) {
-    const {
-      comments: commentsIds,
-    } = nextProps;
+  // fetchComments = (commentsIds) => {
+  //   Promise
+  //     .all(
+  //       commentsIds.map(commentId =>
+  //         getComment(commentId),
+  //       ),
+  //     ).then(comments =>
+  //       Promise.all(comments.map(comment =>
+  //         getUser(comment.author),
+  //       )).then(authors =>
+  //         comments.map((comment) => {
+  //           const { author: authorId } = comment;
+  //           const { firstName, lastName } = authors.find(({ _id }) => _id === authorId);
 
-    this.fetchComments(commentsIds);
-  }
-
-  fetchComments = (commentsIds) => {
-    Promise
-      .all(
-        commentsIds.map(commentId =>
-          getComment(commentId),
-        ),
-      ).then(comments =>
-        Promise.all(comments.map(comment =>
-          getUser(comment.author),
-        )).then(authors =>
-          comments.map((comment) => {
-            const { author: authorId } = comment;
-            const { firstName, lastName } = authors.find(({ _id }) => _id === authorId);
-
-            return {
-              ...comment,
-              author: {
-                firstName,
-                lastName,
-              },
-            };
-          }),
-        ),
-      ).then(comments =>
-        this.setState({
-          comments,
-          isFetching: false,
-        }),
-      );
-  }
+  //           return {
+  //             ...comment,
+  //             author: {
+  //               firstName,
+  //               lastName,
+  //             },
+  //           };
+  //         }),
+  //       ),
+  //     ).then(comments =>
+  //       this.setState({
+  //         comments,
+  //         isFetching: false,
+  //       }),
+  //     );
+  // }
 
   render() {
     const {
-      isFetching,
-      comments,
-    } = this.state;
+      commentsList,
+      pendingUsers,
+    } = this.props;
 
-    if (isFetching) {
-      return (
-        <Loading />
-      );
-    }
-
-    const numOfComments = comments.length;
+    const numOfComments = commentsList.length;
 
     return (
       <div>
         <h3>Comments:</h3>
-        {comments.map((comment, index) => (
-          <CommentPreview
-            key={comment._id}
-            text={comment.text}
-            author={comment.author}
-            isLastComment={numOfComments - 1 === index}
-          />
-        ))}
+        {commentsList.map((comment, index) => {
+          if (pendingUsers.includes(comment.author)) {
+            return <Loading />;
+          }
+          return (
+            <CommentPreview
+              key={comment._id}
+              text={comment.text}
+              author={comment.author}
+              isLastComment={numOfComments - 1 === index}
+            />
+          );
+        })}
       </div>
     );
   }
 }
 
 CommentsList.propTypes = {
-  comments: PropTypes.arrayOf(PropTypes.string).isRequired,
+  commentsList: PropTypes.arrayOf(PropTypes.string).isRequired,
+  pendingUsers: PropTypes.array.isRequired,
 };
+
+const mapStateToProps = (state, ownProps) => ({
+  commentsList: getCommentsByPostId(state.comments, ownProps.postId),
+  pendingUsers: getPendingUsers(state.users),
+});
+
+export default connect(mapStateToProps)(CommentsList);

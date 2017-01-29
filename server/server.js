@@ -9,10 +9,14 @@ import isAuthorizedMiddleware from './middlewares/checkAuth';
 import addPostRouteHandler from './routes/addPostRoute';
 import getPostRouteHandler from './routes/getPostRoute';
 import addCommentRouteHandler from './routes/addCommentRoute';
-import getCommentRouteHandler from './routes/getCommentRoute';
+import getCommentRouteHandler, {
+  getPostCommentsList as getPostCommentsListHandler,
+} from './routes/getCommentRoute';
 import addLikePostRouteHandler from './routes/addLikePostRoute';
 import addLikeCommentRouteHandler from './routes/addLikeCommentRoute';
-import getUserRouteHandler from './routes/getUserRoute';
+import getUserRouteHandler, {
+  getUsersList as getUsersListHandler,
+} from './routes/getUserRoute';
 import getCurrentUserRouteHandler from './routes/getCurrentUserRoute';
 import getPostsRouteHandler from './routes/getPostsRoute';
 
@@ -30,9 +34,11 @@ app.post('/api/post', addPostRouteHandler);
 app.get('/api/post/:postId', getPostRouteHandler);
 app.post('/api/comment', addCommentRouteHandler);
 app.get('/api/comment/:commentId', getCommentRouteHandler);
+app.get('/api/postcomments/:postId', getPostCommentsListHandler);
 app.post('/api/likepost', addLikePostRouteHandler);
 app.post('/api/likecomment', addLikeCommentRouteHandler);
 app.get('/api/user/:userId', getUserRouteHandler);
+app.post('/api/getusers', getUsersListHandler);
 app.get('/api/posts/:pageNum*?', getPostsRouteHandler);
 app.get('/api/currentUser/:token', getCurrentUserRouteHandler);
 
