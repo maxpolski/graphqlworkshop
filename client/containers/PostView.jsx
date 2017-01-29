@@ -4,17 +4,14 @@ import { browserHistory } from 'react-router';
 
 import Loading from './common/Loading';
 import Like from './common/Like';
-import getPost, { addComment } from '../apiCalls/postViewCalls';
-import { getCurrentUser } from '../apiCalls/userDataCalls';
 import CommentsList from './CommentsList';
 import AddCommentComponent from './AddCommenTextBox';
 import isAuthorized from '../helpers/authChecker';
-import { getPostsLikesById, getPendingLikes } from '../reducers/likes';
+import { getPostsLikesById } from '../reducers/likes';
 import { getPostByPostId } from '../reducers/posts';
 import { likePost as likePostAction } from '../actions/likes';
 import { getCommentsList as getCommentsListAction } from '../actions/comments';
 import { getPendingComments, getCommentsByPostId } from '../reducers/comments';
-// import { getPendingUsers, getUserById } from '../reducers/users';
 
 class PostView extends Component {
   componentWillMount() {
@@ -28,22 +25,6 @@ class PostView extends Component {
 
     getCommentsList(postId, comments);
   }
-
-  // onAddComment = (commentText, callBack) => {
-  //   const {
-  //     post: {
-  //       _id: postId,
-  //     },
-  //   } = this.state;
-  //   addComment(postId, commentText)
-  //     .then(() => getPost(postId))
-  //     .then((post) => {
-  //       this.setState({
-  //         post,
-  //       });
-  //       callBack();
-  //     });
-  // }
 
   likePost = () => {
     if (isAuthorized()) {
@@ -73,7 +54,6 @@ class PostView extends Component {
       pendingComments,
     } = this.props;
 
-    // const hasPostCurrentUserLike = !!likes.find(like => like === currentUserId);
     const isAuth = isAuthorized();
     const hasOwnComments = commentsList.length === comments.length;
 
