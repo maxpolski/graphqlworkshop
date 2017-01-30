@@ -1,11 +1,13 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import graphqlHTTP from 'express-graphql';
 
 import configs from '../configs';
 import indexRouteHandler from './routes/indexRoute';
 import authRouteHandler from './routes/authRoute';
 import connectMongo from './helpers/mongo';
 import isAuthorizedMiddleware from './middlewares/checkAuth';
+import graphQLSchema from './graphql/schema';
 import addPostRouteHandler from './routes/addPostRoute';
 import getPostRouteHandler from './routes/getPostRoute';
 import addCommentRouteHandler from './routes/addCommentRoute';
@@ -25,6 +27,10 @@ const PORT = configs.appPort || 3000;
 const app = express();
 
 app.use(express.static('client/dist'));
+app.use('/graphql', graphqlHTTP({
+  schema: graphQLSchema,
+  graphiql: true,
+}));
 app.use(bodyParser.json());
 app.use(isAuthorizedMiddleware);
 
