@@ -1,42 +1,30 @@
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
 import {
   Router,
   Route,
   IndexRoute,
   browserHistory,
+  applyRouterMiddleware,
 } from 'react-router';
+import Relay from 'react-relay';
+import useRelay from 'react-router-relay';
 
 import Layout from './Layout';
 import MainPage from './MainPage';
-import PostView from './PostView';
-import UserView from './UserView';
-import Auth from './Auth';
-import Loading from './common/Loading';
-import { initialize } from '../actions/general';
+// import PostView from './PostView';
+// import UserView from './UserView';
+// import Auth from './Auth';
+// import Loading from './common/Loading';
 import '../assets/styles/main.css';
 import '../assets/styles/bootstrap.css';
 
 class App extends Component {
-  componentWillMount() {
-    this.props.initialize();
-  }
-
   render() {
-    const {
-      isInitialized,
-    } = this.props;
-
-    if (!isInitialized) {
-      console.log('something went wrong');
-      return (
-        <Loading />
-      );
-    }
-
     return (
       <Router
         history={browserHistory}
+        render={applyRouterMiddleware(useRelay)}
+        environment={Relay.Store}
       >
         <Route
           path="/"
@@ -45,7 +33,7 @@ class App extends Component {
           <IndexRoute
             component={MainPage}
           />
-          <Route
+          { /* <Route
             path="post/:postId"
             component={PostView}
           />
@@ -56,23 +44,15 @@ class App extends Component {
           <Route
             path="auth"
             component={Auth}
-          />
+          /> */}
         </Route>
       </Router>
     );
   }
 }
 
-App.propTypes = {
-  initialize: PropTypes.func.isRequired,
-};
+// App.propTypes = {
 
-const mapStateToProps = ({ general }) => ({
-  isInitialized: general.isInitialized,
-});
+// };
 
-const mapDispatchToProps = dispatch => ({
-  initialize: initialize(dispatch),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;

@@ -151,6 +151,9 @@ const postType = new GraphQLObjectType({
   interfaces: [nodeInterface],
 });
 
+const { connectionType: postConnection } =
+  connectionDefinitions({ name: 'Post', nodeType: postType });
+
 const viewerType = new GraphQLObjectType({
   name: 'Viewer',
   fields: {
@@ -184,6 +187,13 @@ const viewerType = new GraphQLObjectType({
         },
       },
       resolve: postResolver,
+    },
+    newestPosts: {
+      type: postConnection,
+      args: connectionArgs,
+      resolve: (root, args) =>
+        connectionFromArray(root.newestPosts.map(post =>
+          postResolver(root, { id: post.id })), args),
     },
     comment: {
       type: commentType,

@@ -1,16 +1,14 @@
 import React, { PropTypes } from 'react';
+import Relay, { createContainer } from 'react-relay';
 
 import PostPreview from './PostPreview';
-import { getPostsLikesById } from '../reducers/likes';
+
 
 const PostsList = (props) => {
   const {
     posts,
     likes,
   } = props;
-
-  console.log('likes', likes);
-  console.log('kinda shit', getPostsLikesById(likes, posts[0]._id));
 
   return (
     <div className="col-8 main-page__posts-holder">
@@ -30,9 +28,19 @@ const PostsList = (props) => {
   );
 };
 
-PostsList.propTypes = {
-  posts: PropTypes.arrayOf(PropTypes.object).isRequired,
-  likes: PropTypes.object.isRequired,
-};
 
-export default PostsList;
+
+// PostsList.propTypes = {
+//   posts: PropTypes.arrayOf(PropTypes.object).isRequired,
+//   likes: PropTypes.object.isRequired,
+// };
+
+export default createContainer(PostsList, {
+  fragments: {
+    posts: () => Relay.QL`
+      fragment on Viewer {
+        newestPosts
+      }
+    `,
+  },
+});

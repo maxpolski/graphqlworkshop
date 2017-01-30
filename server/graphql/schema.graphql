@@ -1,0 +1,174 @@
+input AddCommentInput {
+  text: String!
+  postId: String!
+  token: String!
+  clientMutationId: String
+}
+
+type AddCommentPayload {
+  comment: Comment
+  clientMutationId: String
+}
+
+type Comment implements Node {
+  # The ID of an object
+  id: ID!
+  text: String
+  author: User
+  likes(after: String, first: Int, before: String, last: Int): UserConnection
+  hasCurrentUserLiked(token: String): Boolean
+}
+
+# A connection to a list of items.
+type CommentConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [CommentEdge]
+}
+
+# An edge in a connection.
+type CommentEdge {
+  # The item at the end of the edge
+  node: Comment
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+input CreateTokenInput {
+  login: String!
+  password: String!
+  clientMutationId: String
+}
+
+type CreateTokenPayload {
+  token: String
+  clientMutationId: String
+}
+
+input LikeCommentInput {
+  commentId: String!
+  token: String!
+  clientMutationId: String
+}
+
+type LikeCommentPayload {
+  comment: Comment
+  clientMutationId: String
+}
+
+input LikePostInput {
+  postId: String!
+  token: String!
+  clientMutationId: String
+}
+
+type LikePostPayload {
+  post: Post
+  clientMutationId: String
+}
+
+type Mutation {
+  createToken(input: CreateTokenInput!): CreateTokenPayload
+  likePost(input: LikePostInput!): LikePostPayload
+  addComment(input: AddCommentInput!): AddCommentPayload
+  likeComment(input: LikeCommentInput!): LikeCommentPayload
+}
+
+# An object with an ID
+interface Node {
+  # The id of the object.
+  id: ID!
+}
+
+# Information about pagination in a connection.
+type PageInfo {
+  # When paginating forwards, are there more items?
+  hasNextPage: Boolean!
+
+  # When paginating backwards, are there more items?
+  hasPreviousPage: Boolean!
+
+  # When paginating backwards, the cursor to continue.
+  startCursor: String
+
+  # When paginating forwards, the cursor to continue.
+  endCursor: String
+}
+
+type Post implements Node {
+  # The ID of an object
+  id: ID!
+  title: String
+  description: String
+  mainText: String
+  author: User
+  comments(after: String, first: Int, before: String, last: Int): CommentConnection
+  likes(after: String, first: Int, before: String, last: Int): UserConnection
+  hasCurrentUserLiked(token: String): Boolean
+}
+
+# A connection to a list of items.
+type PostConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [PostEdge]
+}
+
+# An edge in a connection.
+type PostEdge {
+  # The item at the end of the edge
+  node: Post
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+type Query {
+  # Fetches an object given its ID
+  node(
+    # The ID of an object
+    id: ID!
+  ): Node
+  viewer(token: String): Viewer
+}
+
+type User implements Node {
+  # The ID of an object
+  id: ID!
+  firstName: String
+  lastName: String
+}
+
+# A connection to a list of items.
+type UserConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [UserEdge]
+}
+
+# An edge in a connection.
+type UserEdge {
+  # The item at the end of the edge
+  node: User
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+type Viewer implements Node {
+  # The ID of an object
+  id: ID!
+  userId: String
+  me: User
+  user(id: String): User
+  post(id: String): Post
+  newestPosts(after: String, first: Int, before: String, last: Int): PostConnection
+  comment(id: String): Comment
+}
