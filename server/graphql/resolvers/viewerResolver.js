@@ -1,7 +1,8 @@
 import { getUserIdFromToken } from '../../helpers/token';
 
 export default (root, args) => {
-  const userId = getUserIdFromToken(args.token);
+  const { token } = args;
+  const userId = token ? getUserIdFromToken(args.token) : '';
   return {
     userId,
   };

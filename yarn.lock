@@ -852,6 +852,13 @@ babel-runtime@^6.0.0, babel-runtime@^6.11.6, babel-runtime@^6.18.0, babel-runtim
     core-js "^2.4.0"
     regenerator-runtime "^0.10.0"
 
+babel-runtime@^6.6.1:
+  version "6.22.0"
+  resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.22.0.tgz#1cf8b4ac67c77a4ddb0db2ae1f74de52ac4ca611"
+  dependencies:
+    core-js "^2.4.0"
+    regenerator-runtime "^0.10.0"
+
 babel-template@^6.14.0, babel-template@^6.15.0, babel-template@^6.16.0, babel-template@^6.8.0:
   version "6.16.0"
   resolved "https://registry.yarnpkg.com/babel-template/-/babel-template-6.16.0.tgz#e149dd1a9f03a35f817ddbc4d0481988e7ebc8ca"
@@ -2009,6 +2016,10 @@ graphql:
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-0.9.1.tgz#f4d154cbec054d4a5d3b1be95f23435c09aa86c8"
   dependencies:
     iterall "1.0.3"
+
+graphql-relay:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/graphql-relay/-/graphql-relay-0.5.1.tgz#3b3e44430a24c0f636e713f43f65bd542fe02ac9"
 
 har-validator@~2.0.6:
   version "2.0.6"
@@ -3315,6 +3326,14 @@ react-redux:
     lodash-es "^4.2.0"
     loose-envify "^1.1.0"
 
+react-relay:
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/react-relay/-/react-relay-0.10.0.tgz#4b19c4450e0140b9f04fd6fe96d8f451f0804078"
+  dependencies:
+    babel-runtime "^6.6.1"
+    fbjs "^0.8.1"
+    react-static-container "^1.0.1"
+
 react-router:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/react-router/-/react-router-3.0.1.tgz#a4bf86441bd796e86a1c41d61397b604e2e4b98f"
@@ -3324,6 +3343,10 @@ react-router:
     invariant "^2.2.1"
     loose-envify "^1.2.0"
     warning "^3.0.0"
+
+react-static-container@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-static-container/-/react-static-container-1.0.1.tgz#694c0dd68a896b879519afb548399cc1989c9ab0"
 
 "readable-stream@^2.0.0 || ^1.1.13", readable-stream@^2.0.1, readable-stream@^2.0.2, readable-stream@^2.0.5, readable-stream@^2.1.0, readable-stream@^2.2.2:
   version "2.2.2"
@@ -3453,6 +3476,10 @@ regjsparser@^0.1.4:
   resolved "https://registry.yarnpkg.com/regjsparser/-/regjsparser-0.1.5.tgz#7ee8f84dc6fa792d3fd0ae228d24bd949ead205c"
   dependencies:
     jsesc "~0.5.0"
+
+relay:
+  version "0.8.0-1"
+  resolved "https://registry.yarnpkg.com/relay/-/relay-0.8.0-1.tgz#f2b632ea1be64bbe706c9351a99b27320ee89e07"
 
 repeat-element@^1.1.2:
   version "1.1.2"
