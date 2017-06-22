@@ -7,7 +7,9 @@
     "build-frontend": "webpack --config client/configs/webpack/webpack.config.babel.js",
     "start": "yarn build-frontend && node server/index.js",
     "dev-frontend": "webpack --watch -d --color --config client/configs/webpack/webpack.config.babel.js",
-    "dev-backend": "nodemon --ignore client server/index.js"
+    "dev-backend": "nodemon --ignore client server/index.js",
+    "clear-data": "./node_modules/.bin/babel-node scripts/clearData.js",
+    "generate-mock-data": "./node_modules/.bin/babel-node scripts/mockData.js"
   },
   "license": "MIT",
   "dependencies": {
@@ -23,6 +25,7 @@
     "redux": "^3.6.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.24.1",
     "babel-core": "^6.21.0",
     "babel-eslint": "6",
     "babel-loader": "^6.2.10",
