@@ -84,9 +84,4 @@ CommentsList.propTypes = {
   pendingUsers: PropTypes.array.isRequired,
 };
 
-const mapStateToProps = (state, ownProps) => ({
-  commentsList: getCommentsByPostId(state.comments, ownProps.postId),
-  pendingUsers: getPendingUsers(state.users),
-});
-
-export default connect(mapStateToProps)(CommentsList);
+export default CommentsList;

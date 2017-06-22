@@ -6,6 +6,7 @@
   "scripts": {
     "build-frontend": "webpack --config client/configs/webpack/webpack.config.babel.js",
     "start": "yarn build-frontend && node server/index.js",
+    "update-schema": "babel-node scripts/update-schema.js",
     "dev-frontend": "webpack --watch -d --color --config client/configs/webpack/webpack.config.babel.js",
     "dev-backend": "nodemon --ignore client server/index.js"
   },

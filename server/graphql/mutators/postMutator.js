@@ -1,6 +1,6 @@
 import Post from '../../data/models/post';
 
-export const likePostMutator = (postId, userId) => {
+export const likePostMutator = (postId, userId) =>
   Post.findById(postId)
     .then((post) => {
       const userLikeId = post.likes.indexOf(userId);
@@ -13,4 +13,3 @@ export const likePostMutator = (postId, userId) => {
       [...post.likes, userId];
       return Post.findByIdAndUpdate(postId, { likes: newLikesList });
     });
-};

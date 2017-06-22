@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
+import Relay, { createContainer } from 'react-relay';
 import { browserHistory } from 'react-router';
-import makeFetch from 'fetch-ponyfill';
-
-const { fetch } = makeFetch();
 
 export default class Auth extends Component {
   state = {
     login: '',
     password: '',
+  }
+
+  constructor(props) {
+    super();
+    
   }
 
   handleLoginEnter = ({ target: { value } }) => {
@@ -18,36 +21,36 @@ export default class Auth extends Component {
     this.setState({ password: value });
   }
 
-  handleCredentialsSend = (event) => {
-    event.preventDefault();
+  // handleCredentialsSend = (event) => {
+  //   event.preventDefault();
 
-    const {
-      login,
-      password,
-    } = this.state;
+  //   const {
+  //     login,
+  //     password,
+  //   } = this.state;
 
-    fetch('/api/auth', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ login, password }),
-    })
-      .then(res => res.json())
-      .then(this.handleAuthResponse)
-      .catch(err => console.error(`Something went wrong ${err}`));
-  }
+  //   fetch('/api/auth', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({ login, password }),
+  //   })
+  //     .then(res => res.json())
+  //     .then(this.handleAuthResponse)
+  //     .catch(err => console.error(`Something went wrong ${err}`));
+  // }
 
-  handleAuthResponse = (response) => {
-    const { token } = response;
-    if (!token) {
-      this.setState({ message: 'Login or/and password are incorrect' });
-      return;
-    }
+  // handleAuthResponse = (response) => {
+  //   const { token } = response;
+  //   if (!token) {
+  //     this.setState({ message: 'Login or/and password are incorrect' });
+  //     return;
+  //   }
 
-    localStorage.setItem('token', token);
-    browserHistory.push('');
-  }
+  //   localStorage.setItem('token', token);
+  //   browserHistory.push('');
+  // }
 
   render() {
     const {
@@ -91,3 +94,20 @@ export default class Auth extends Component {
     );
   }
 }
+
+// export default createContainer(Auth, {
+//   initialVariables: {
+//     login: '',
+//     password: '',
+//   },
+//   fragment: {
+//     me: () => Relay.QL`
+//       fragment on Viewer {
+//         me {
+//           firstName,
+//           lastName,
+//         }
+//       }
+//     `,
+//   },
+// });

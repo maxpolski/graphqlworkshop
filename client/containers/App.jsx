@@ -9,14 +9,31 @@ import {
 import Relay from 'react-relay';
 import useRelay from 'react-router-relay';
 
+import mainPageQueries from '../relay/queries/mainPageQueries';
 import Layout from './Layout';
 import MainPage from './MainPage';
-// import PostView from './PostView';
+import PostView from './PostView';
 // import UserView from './UserView';
-// import Auth from './Auth';
+import Auth from './Auth';
 // import Loading from './common/Loading';
 import '../assets/styles/main.css';
 import '../assets/styles/bootstrap.css';
+
+function prepareParams() {
+  return {
+    token: localStorage.getItem('token'),
+  };
+}
+
+function preparePostViewPageParams(params, { location }) {
+  const { postId } = params;
+
+  return {
+    ...params,
+    token: localStorage.getItem('token'),
+    postId,
+  };
+}
 
 class App extends Component {
   render() {
@@ -31,20 +48,24 @@ class App extends Component {
           component={Layout}
         >
           <IndexRoute
+            queries={mainPageQueries}
+            prepareParams={prepareParams}
             component={MainPage}
           />
-          { /* <Route
+          <Route
             path="post/:postId"
+            queries={mainPageQueries}
+            prepareParams={preparePostViewPageParams}
             component={PostView}
           />
-          <Route
+          { /* <Route
             path="user(/:userId)"
             component={UserView}
-          />
+          /> */}
           <Route
             path="auth"
             component={Auth}
-          /> */}
+          />
         </Route>
       </Router>
     );

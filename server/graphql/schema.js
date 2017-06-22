@@ -4,6 +4,7 @@ import {
   GraphQLString,
   GraphQLNonNull,
   GraphQLBoolean,
+  GraphQLInt,
 } from 'graphql';
 import {
   fromGlobalId,
@@ -13,6 +14,7 @@ import {
   connectionFromArray,
   connectionDefinitions,
   mutationWithClientMutationId,
+  cursorForObjectInConnection,
 } from 'graphql-relay';
 
 import { getUserIdFromToken } from '../helpers/token';
@@ -66,8 +68,18 @@ const userType = new GraphQLObjectType({
   interfaces: [nodeInterface],
 });
 
-const { connectionType: userConnection } =
-  connectionDefinitions({ name: 'User', nodeType: userType });
+const { connectionType: userConnection, edgeType: userEdge } =
+  connectionDefinitions({
+    name: 'User',
+    nodeType: userType,
+    connectionFields: () => ({
+      count: {
+        type: GraphQLInt,
+        resolve: connection => connection.edges.length,
+        description: 'Total count of users likes',
+      },
+    }),
+  });
 
 const commentType = new GraphQLObjectType({
   name: 'Comment',
@@ -89,14 +101,8 @@ const commentType = new GraphQLObjectType({
     },
     hasCurrentUserLiked: {
       type: GraphQLBoolean,
-      args: {
-        token: {
-          name: 'token',
-          type: GraphQLString,
-        },
-      },
-      resolve: (root, args) =>
-        root.likes.includes(getUserIdFromToken(args.token)),
+      resolve: root =>
+        root.likes.includes(root.userId),
     },
   },
   interfaces: [nodeInterface],
@@ -138,14 +144,8 @@ const postType = new GraphQLObjectType({
     },
     hasCurrentUserLiked: {
       type: GraphQLBoolean,
-      args: {
-        token: {
-          name: 'token',
-          type: GraphQLString,
-        },
-      },
-      resolve: (root, args) =>
-        root.likes.includes(getUserIdFromToken(args.token)),
+      resolve: root =>
+        root.likes.includes(root.id),
     },
   },
   interfaces: [nodeInterface],
@@ -186,7 +186,13 @@ const viewerType = new GraphQLObjectType({
           type: GraphQLString,
         },
       },
-      resolve: postResolver,
+      resolve: (root, { id }) => {
+        if (!id) {
+          return null;
+        }
+
+        return postResolver(root, { id: fromGlobalId(id).id });
+      },
     },
     newestPosts: {
       type: postConnection,
@@ -203,7 +209,8 @@ const viewerType = new GraphQLObjectType({
           type: GraphQLString,
         },
       },
-      resolve: commentResolver,
+      resolve: (root, { id }) =>
+        commentResolver(root, { id: fromGlobalId(id).id }),
     },
   },
   interfaces: [nodeInterface],
@@ -221,7 +228,8 @@ const queryType = new GraphQLObjectType({
           type: GraphQLString,
         },
       },
-      resolve: viewerResolver,
+      resolve: (root, args) =>
+        viewerResolver(root, args),
     },
   },
 });
@@ -234,7 +242,7 @@ const CreateTokenMutation = mutationWithClientMutationId({
   },
   outputFields: {
     token: {
-      type: GraphQLString,
+      type: userEdge,
       resolve: ({ token }) => token,
     },
   },
@@ -250,19 +258,38 @@ const LikePostMutation = mutationWithClientMutationId({
     token: { type: new GraphQLNonNull(GraphQLString) },
   },
   outputFields: {
+    newLikeEdge: {
+      type: userEdge,
+      resolve: payload =>
+        postResolver({}, { id: payload.postId })
+          .then((post) => {
+            if (post.likes.length > 0) {
+              return userResolver({}, { id: payload.userId })
+                .then(user => ({
+                  cursor: cursorForObjectInConnection(
+                    post.likes,
+                    user.id,
+                  ),
+                  node: user,
+                }));
+            }
+            return null;
+          }),
+    },
     post: {
       type: postType,
-      resolve: ({ id }) => postResolver({}, { id }),
+      resolve: ({ postId, token }) =>
+        postResolver({}, { id: postId, token }),
     },
   },
   mutateAndGetPayload: ({ postId, token }) => {
     const { id: localPostId } = fromGlobalId(postId);
     const userId = getUserIdFromToken(token);
     if (userId) {
-      return likePostMutator(localPostId, userId);
+      return likePostMutator(localPostId, userId)
+        .then(post => ({ postId: post.id, userId, token }));
     }
-
-    return { id: localPostId };
+    return { postId: localPostId, userId };
   },
 });
 

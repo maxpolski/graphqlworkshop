@@ -1,61 +1,44 @@
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
-import { browserHistory } from 'react-router';
+import Relay, { createContainer } from 'react-relay';
+// import { browserHistory } from 'react-router';
 
-import Loading from './common/Loading';
-import Like from './common/Like';
-import CommentsList from './CommentsList';
-import AddCommentComponent from './AddCommenTextBox';
-import isAuthorized from '../helpers/authChecker';
-import { getPostsLikesById } from '../reducers/likes';
-import { getPostByPostId } from '../reducers/posts';
-import { likePost as likePostAction } from '../actions/likes';
-import { getCommentsList as getCommentsListAction } from '../actions/comments';
-import { getPendingComments, getCommentsByPostId } from '../reducers/comments';
+import Likes from './common/Likes';
+// import CommentsList from './CommentsList';
+// import isAuthorized from '../helpers/authChecker';
+
 
 class PostView extends Component {
-  componentWillMount() {
-    const {
-      post: {
-        _id: postId,
-        comments,
-      },
-      getCommentsList,
-    } = this.props;
+  // likePost = () => {
+  //   if (isAuthorized()) {
+  //     const {
+  //       likePost,
+  //       post: {
+  //         id: postId,
+  //       },
+  //     } = this.props;
+  //     return likePost(postId);
+  //   }
 
-    getCommentsList(postId, comments);
-  }
+  //   browserHistory.push('/auth');
+  // }
 
   likePost = () => {
-    if (isAuthorized()) {
-      const {
-        likePost,
-        post: {
-          _id: postId,
-        },
-      } = this.props;
-      return likePost(postId);
-    }
 
-    browserHistory.push('/auth');
   }
 
   render() {
     const {
-      post: {
-        _id: postId,
-        title,
-        mainText,
-        comments,
+      viewer: {
+        me,
+        post,
+        post: {
+          title,
+          mainText,
+        },
       },
-      likes,
-      commentsList,
-      pendingLikes,
-      pendingComments,
     } = this.props;
 
-    const isAuth = isAuthorized();
-    const hasOwnComments = commentsList.length === comments.length;
+    const isAuth = !!me;
 
     return (
       <div>
@@ -64,13 +47,9 @@ class PostView extends Component {
             <h1>{title}</h1>
             <div className="post-page__post-holder__post-body">{mainText}</div>
             <div className="offset-md-10">
-              <Like
-                hasLiked
-                likesCount={likes.length}
-                onLikeClick={this.likePost}
-              />
+              <Likes post={post} me={me} />
             </div>
-            {
+            {/*
               isAuth ? (
                 <AddCommentComponent onAddComment={this.onAddComment} />
               )
@@ -78,17 +57,9 @@ class PostView extends Component {
               (
                 <Loading />
               )
-            }
-            {
-              pendingComments.includes(postId) || !hasOwnComments ?
-                (
-                  <Loading />
-                )
-              :
-                (
-                  <CommentsList postId={postId} commentsList={commentsList} />
-                )
-            }
+            
+            <CommentsList commentsList={comments} />
+            */}
           </div>
         </div>
       </div>
@@ -96,33 +67,35 @@ class PostView extends Component {
   }
 }
 
-PostView.defaultProps = {
-  likes: [],
-};
-
 PostView.propTypes = {
-  post: PropTypes.shape({
-    _id: PropTypes.string,
-    title: PropTypes.string,
-    comments: PropTypes.string,
-    mainText: PropTypes.string,
+  viewer: PropTypes.shape({
+    post: PropTypes.shape({
+      id: PropTypes.string,
+      title: PropTypes.string,
+      mainText: PropTypes.string,
+    }),
   }).isRequired,
-  likes: PropTypes.arrayOf(PropTypes.string).isRequired,
-  pendingComments: PropTypes.array.isRequired,
-  getCommentsList: PropTypes.func.isRequired,
-  likePost: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state, ownProps) => ({
-  post: getPostByPostId(state.posts, ownProps.params.postId),
-  likes: getPostsLikesById(state.likes, ownProps.params.postId),
-  pendingComments: getPendingComments(state.comments),
-  commentsList: getCommentsByPostId(state.comments, ownProps.params.postId),
+export default createContainer(PostView, {
+  initialVariables: {
+    postId: null,
+  },
+  fragments: {
+    viewer: () => Relay.QL`
+      fragment on Viewer {
+        me {
+          firstName,
+          lastName,
+          ${Likes.getFragment('me')}
+        }
+        post(id: $postId) {
+          id
+          title
+          mainText
+          ${Likes.getFragment('post')}
+        }
+      }
+    `,
+  },
 });
-
-const mapDispatchToProps = dispatch => ({
-  likePost: likePostAction(dispatch),
-  getCommentsList: getCommentsListAction(dispatch),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(PostView);

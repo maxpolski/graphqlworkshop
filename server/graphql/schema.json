@@ -854,18 +854,7 @@
             {
               "name": "hasCurrentUserLiked",
               "description": null,
-              "args": [
-                {
-                  "name": "token",
-                  "description": null,
-                  "type": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  },
-                  "defaultValue": null
-                }
-              ],
+              "args": [],
               "type": {
                 "kind": "SCALAR",
                 "name": "Boolean",
@@ -919,6 +908,18 @@
                   "name": "UserEdge",
                   "ofType": null
                 }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "count",
+              "description": "Total count of users likes",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -1228,8 +1229,8 @@
               "description": null,
               "args": [],
               "type": {
-                "kind": "SCALAR",
-                "name": "String",
+                "kind": "OBJECT",
+                "name": "UserEdge",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -1307,6 +1308,18 @@
           "name": "LikePostPayload",
           "description": null,
           "fields": [
+            {
+              "name": "newLikeEdge",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "UserEdge",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
             {
               "name": "post",
               "description": null,

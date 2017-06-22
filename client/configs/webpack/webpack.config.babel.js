@@ -5,7 +5,7 @@ const dirSrc = path.resolve(__dirname, '../../');
 const dirBuild = path.resolve(__dirname, '../../dist');
 
 export default {
-  devtool: 'cheap-module-source-map',
+  devtool: 'eval',
   entry: [
     path.resolve(dirSrc, './index.js'),
   ],
@@ -28,6 +28,7 @@ export default {
             'stage-2',
             'react',
           ],
+          plugins: ['./../../build/babelRelayPlugin'],
         },
       },
       {
