@@ -23,7 +23,6 @@ import viewerResolver from './resolvers/viewerResolver';
 import userResolver from './resolvers/userResolver';
 import postResolver from './resolvers/postResolver';
 import commentResolver from './resolvers/commentResolver';
-import createTokenMutator from './mutators/tokenMutator';
 import { likePostMutator } from './mutators/postMutator';
 import { likeCommentMutator, addCommentMutator } from './mutators/commentMutator';
 
@@ -234,23 +233,6 @@ const queryType = new GraphQLObjectType({
   },
 });
 
-const CreateTokenMutation = mutationWithClientMutationId({
-  name: 'CreateToken',
-  inputFields: {
-    login: { type: new GraphQLNonNull(GraphQLString) },
-    password: { type: new GraphQLNonNull(GraphQLString) },
-  },
-  outputFields: {
-    token: {
-      type: userEdge,
-      resolve: ({ token }) => token,
-    },
-  },
-  mutateAndGetPayload: ({ login, password }) => ({
-    token: createTokenMutator({}, { login, password }),
-  }),
-});
-
 const LikePostMutation = mutationWithClientMutationId({
   name: 'LikePost',
   inputFields: {
@@ -349,7 +331,6 @@ const AddCommentMutation = mutationWithClientMutationId({
 const mutationType = new GraphQLObjectType({
   name: 'Mutation',
   fields: {
-    createToken: CreateTokenMutation,
     likePost: LikePostMutation,
     addComment: AddCommentMutation,
     likeComment: LikeCommentMutation,

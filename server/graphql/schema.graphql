@@ -44,7 +44,7 @@ input CreateTokenInput {
 }
 
 type CreateTokenPayload {
-  token: UserEdge
+  token: String
   clientMutationId: String
 }
 
@@ -108,7 +108,7 @@ type Post implements Node {
   author: User
   comments(after: String, first: Int, before: String, last: Int): CommentConnection
   likes(after: String, first: Int, before: String, last: Int): UserConnection
-  hasCurrentUserLiked(token: String): Boolean
+  hasCurrentUserLiked: Boolean
 }
 
 # A connection to a list of items.

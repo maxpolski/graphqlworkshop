@@ -552,18 +552,7 @@
             {
               "name": "hasCurrentUserLiked",
               "description": null,
-              "args": [
-                {
-                  "name": "token",
-                  "description": null,
-                  "type": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  },
-                  "defaultValue": null
-                }
-              ],
+              "args": [],
               "type": {
                 "kind": "SCALAR",
                 "name": "Boolean",
@@ -1229,8 +1218,8 @@
               "description": null,
               "args": [],
               "type": {
-                "kind": "OBJECT",
-                "name": "UserEdge",
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "isDeprecated": false,

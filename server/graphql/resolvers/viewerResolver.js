@@ -6,6 +6,7 @@ export default (root, args) => {
   const userId = token ? getUserIdFromToken(args.token) : '';
   return Post.find({})
     .then(newestPosts => ({
+      token,
       userId,
       newestPosts,
     }));

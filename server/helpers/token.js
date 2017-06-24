@@ -14,3 +14,6 @@ export const getUserIdFromToken = (token) => {
   const { id } = jwt.decode(token, config.tokenSecretString);
   return id;
 };
+
+// TODO: add logic
+export const updateToken = token => token;
