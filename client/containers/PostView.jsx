@@ -57,7 +57,6 @@ class PostView extends Component {
               (
                 <Loading />
               )
-            
             <CommentsList commentsList={comments} />
             */}
           </div>

@@ -1,3 +1,9 @@
+.about-page__text-holder {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  margin: 50px auto;
+  padding: 20px;
+}
+
 .auth-page__auth-form {
     margin: 10px auto;
     width: 400px;

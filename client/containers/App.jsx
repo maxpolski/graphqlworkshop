@@ -13,19 +13,18 @@ import mainPageQueries from '../relay/queries/mainPageQueries';
 import Layout from './Layout';
 import MainPage from './MainPage';
 import PostView from './PostView';
+import About from './About';
 // import UserView from './UserView';
 import Auth from './Auth';
 // import Loading from './common/Loading';
 import '../assets/styles/main.css';
 import '../assets/styles/bootstrap.css';
 
-function prepareParams() {
-  return {
-    token: localStorage.getItem('token'),
-  };
-}
+const prepareParams = () => ({
+  token: localStorage.getItem('token'),
+});
 
-function preparePostViewPageParams(params, { location }) {
+const preparePostViewPageParams = (params) => {
   const { postId } = params;
 
   return {
@@ -33,47 +32,41 @@ function preparePostViewPageParams(params, { location }) {
     token: localStorage.getItem('token'),
     postId,
   };
-}
+};
 
-class App extends Component {
-  render() {
-    return (
-      <Router
-        history={browserHistory}
-        render={applyRouterMiddleware(useRelay)}
-        environment={Relay.Store}
-      >
-        <Route
-          path="/"
-          component={Layout}
-        >
-          <IndexRoute
-            queries={mainPageQueries}
-            prepareParams={prepareParams}
-            component={MainPage}
-          />
-          <Route
-            path="post/:postId"
-            queries={mainPageQueries}
-            prepareParams={preparePostViewPageParams}
-            component={PostView}
-          />
-          { /* <Route
-            path="user(/:userId)"
-            component={UserView}
-          /> */}
-          <Route
-            path="auth"
-            component={Auth}
-          />
-        </Route>
-      </Router>
-    );
-  }
-}
-
-// App.propTypes = {
-
-// };
-
-export default App;
+export default () => (
+  <Router
+    history={browserHistory}
+    render={applyRouterMiddleware(useRelay)}
+    environment={Relay.Store}
+  >
+    <Route
+      path="/"
+      component={Layout}
+    >
+      <IndexRoute
+        queries={mainPageQueries}
+        prepareParams={prepareParams}
+        component={MainPage}
+      />
+      <Route
+        path="post/:postId"
+        queries={mainPageQueries}
+        prepareParams={preparePostViewPageParams}
+        component={PostView}
+      />
+      <Route
+        path="about"
+        component={About}
+      />
+      { /* <Route
+        path="user(/:userId)"
+        component={UserView}
+      /> */}
+      <Route
+        path="auth"
+        component={Auth}
+      />
+    </Route>
+  </Router>
+);
